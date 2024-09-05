@@ -55,10 +55,10 @@ class TrionesDataProvider{
 
     fun makePatternSpeedData(percent: Int): ByteArray{
         var speedValue = (percent / 100) * 31
-        speedValue = 32 - speedValue
+        speedValue = 31 - speedValue
         val data = byteArrayOf(
             0xBB.toByte(),
-            0x25.toByte(),
+            0x2E.toByte(),
             speedValue.toByte(),
             0x44.toByte(),
         )
