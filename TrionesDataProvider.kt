@@ -1,13 +1,29 @@
 import java.awt.Color
 import java.util.UUID
 
+enum class PowerStatus{
+    ON,
+    OFF,
+}
+
 class TrionesDataProvider{
     val serviceUUID = UUID.fromString("0000ffd5-0000-1000-8000-00805f9b34fb")
     val characteristicUUID = UUID.fromString("0000ffd9-0000-1000-8000-00805f9b34fb")
 
+    /**
+     * Makes characteristic values to set the power status of the lights.
+     * @param powerStatus Enum value that can ON or OFF
+     */
+
+    fun makePowerData(powerStatus: PowerStatus) = byteArrayOf(
+        0xCC.toByte(),
+        if (powerStatus == PowerStatus.ON) 0x23.toByte() else 0x24.toByte(),
+        0x33.toByte(),
+    )
+
 
     /**
-     * Makes characteristic values to set the colour of the light. This function is also used to control brightness, by
+     * Makes characteristic values to set the colour of the lights. This function is also used to control brightness, by
      * sending darker/lighter colours.
      * @param color The colour to set.
      */
