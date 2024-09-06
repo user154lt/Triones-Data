@@ -38,31 +38,23 @@ class TrionesDataProvider{
     )
 
     /**
-     * Makes characteristic values to set the pattern of the lights.
+     * Makes characteristic values to set the pattern of the lights. With these light both pattern and speed are
+     * set at the same time.
      * @param pattern The pattern to set, see PatternListProvider.kt for pattern indices.
+     * @param speedPercent The speed to set expressed as a percentage.
      */
-    fun makePatternData(pattern: Pattern) = byteArrayOf(
+    fun makePatternData(pattern: Pattern, speedPercent: Int) = byteArrayOf(
         0xBB.toByte(),
         pattern.index.toByte(),
-        0x10.toByte(),
+        getSpeedValue(percent = speedPercent).toByte(),
         0x44.toByte(),
     )
 
-    /**
-     * Makes characteristic values to set the pattern speed.
-     * @param percent Percentage to set, this will only be approximate as the light's speed value only has 31 steps.
-     */
-
-    fun makePatternSpeedData(percent: Int): ByteArray{
-        var speedValue = (percent / 100) * 31
-        speedValue = 31 - speedValue
-        val data = byteArrayOf(
-            0xBB.toByte(),
-            0x2E.toByte(),
-            speedValue.toByte(),
-            0x44.toByte(),
-        )
-        return data
+    private fun getSpeedValue(percent: Int): Int{
+        var speed = (percent / 100f) * 31f
+        speed.coerceIn(0f..30f)
+        speed = 31 - speed
+        return speed.toInt()
     }
 
 
